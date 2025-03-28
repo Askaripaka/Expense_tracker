@@ -38,11 +38,11 @@ class Expeses:
             with open("./expenses.csv", "r") as file:
                 reader = csv.DictReader(file)
                 entries = list(reader)
-                
+
                 if not entries:
                     print("No expenses found.")
                     return
-                    
+
                 print("\n--- Your Expenses ---")
                 for i in entries:
                     print(
@@ -60,24 +60,28 @@ class Expeses:
             with open("./expenses.csv", "r") as file:
                 reader = csv.DictReader(file)
                 all_entries = list(reader)
-                
-                entry_exists = any(int(row["index"]) == entry_number for row in all_entries)
+
+                entry_exists = any(
+                    int(row["index"]) == entry_number for row in all_entries
+                )
                 if not entry_exists:
-                    print(f"Error: Entry with index {entry_number} not found.")
-                    raise KeyError(f"Entry with index {entry_number} not found")
-                
-                entries = [row for row in all_entries if int(row["index"]) != entry_number]
-            
+                    print(f"\nError: Entry with index {entry_number} not found.")
+                    raise KeyError(f"Entry with index {entry_number} not found\n")
+
+                entries = [
+                    row for row in all_entries if int(row["index"]) != entry_number
+                ]
+
             for i, entry in enumerate(entries):
                 entry["index"] = i
-            
-            with open("./expenses.csv", "w", newline='') as file:
+
+            with open("./expenses.csv", "w", newline="") as file:
                 writer = csv.DictWriter(file, fieldnames=FIELDNAMES)
                 writer.writeheader()
                 writer.writerows(entries)
-            
+
             print(f"Entry {entry_number} deleted successfully.")
-            
+
         except FileNotFoundError:
             print("No expenses recorded yet")
             raise KeyError("No expenses file found")
